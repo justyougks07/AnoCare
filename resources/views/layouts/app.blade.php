@@ -4,46 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>AnoCare - @yield('title', 'Klinik Cerdas')</title>
-    
-    <!-- Tailwind CSS CDN -->
+
+    {{-- Tailwind --}}
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome (opsional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    {{-- Font Awesome --}}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    {{-- Google Font --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    
-    {{-- Navbar Sederhana --}}
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-blue-600">🏥 AnoCare</span>
-                    <span class="ml-2 text-gray-600">Klinik Cerdas</span>
-                </div>
-                
-                <div class="flex space-x-4">
-                    <a href="{{ route('patients.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
-                        📋 Pasien
-                    </a>
-                    <a href="{{ route('patients.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                        + Pasien Baru
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
-    {{-- Main Content --}}
-    <main>
+
+<body class="bg-slate-50 text-slate-800"
+      style="font-family: 'Inter', sans-serif;">
+
+    {{-- ✅ NAVBAR --}}
+    @include('layouts.navigation')
+
+    {{-- ✅ CONTENT --}}
+    <main class="min-h-screen">
         @yield('content')
     </main>
-    
-    {{-- Footer --}}
-    <footer class="bg-white shadow-lg mt-8 py-4 text-center text-gray-500 text-sm">
-        © 2025 AnoCare - Sistem Manajemen Klinik Cerdas
+
+    {{-- ✅ FOOTER --}}
+    <footer class="border-t border-slate-200 bg-white mt-10">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center">
+            <div>
+                <h3 class="font-semibold">🏥 AnoCare</h3>
+                <p class="text-sm text-slate-500">
+                    Sistem Manajemen Klinik Modern
+                </p>
+            </div>
+
+            <p class="text-sm text-slate-400">
+                © 2025 AnoCare
+            </p>
+        </div>
     </footer>
-    
+
 </body>
 </html>

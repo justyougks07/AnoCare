@@ -139,6 +139,7 @@ class MedicineController extends Controller
         return redirect()->route('medicines.index')
                          ->with('success', 'Seluruh stok obat berhasil disinkronisasi!');
     }
+    
 
     /**
      * HAPUS DATA (DESTROY)

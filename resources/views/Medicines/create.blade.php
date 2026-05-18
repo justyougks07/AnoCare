@@ -1,26 +1,60 @@
-<h1>Tambah Obat Baru</h1>
-<form action="{{ route('medicines.store') }}" method="POST">
-    @csrf
-    <div>
-        <label>Nama Obat:</label><br>
-        <input type="text" name="name" required>
-    </div><br>
-    <div>
-        <label>Jenis:</label><br>
-        <select name="type">
-            <option value="Tablet">Tablet</option>
-            <option value="Sirup">Sirup</option>
-            <option value="Kaplet">Kaplet</option>
-        </select>
-    </div><br>
-    <div>
-        <label>Stok Awal:</label><br>
-        <input type="number" name="stock" value="0">
-    </div><br>
-    <div>
-        <label>Harga:</label><br>
-        <input type="number" name="price" required>
-    </div><br>
-    <button type="submit">Simpan Obat</button>
-    <a href="{{ route('medicines.index') }}">Kembali</a>
-</form>
+@extends('layouts.app')
+
+@section('title','Tambah Obat')
+
+@section('content')
+
+<div class="max-w-3xl mx-auto px-6 py-8">
+
+    <div class="bg-white p-8 rounded-2xl shadow border">
+
+        <h1 class="text-xl font-bold mb-6">
+            Tambah Obat
+        </h1>
+
+        <form method="POST" action="{{ route('medicines.store') }}">
+            @csrf
+
+            <div class="mb-4">
+                <label class="block mb-2">Nama Obat</label>
+                <input type="text" name="name"
+                    class="w-full border rounded-xl p-3">
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2">Stok</label>
+                <input type="number" name="stock"
+                    class="w-full border rounded-xl p-3">
+            </div>
+            <div class="mb-4">
+    <label class="block mb-2">Jenis Obat</label>
+
+    <select name="type"
+        class="w-full border rounded-xl p-3">
+
+        <option value="tablet">Tablet</option>
+        <option value="sirup">Sirup</option>
+        <option value="kapsul">Kapsul</option>
+        <option value="salep">Salep</option>
+        <option value="injeksi">Injeksi</option>
+
+    </select>
+</div>
+
+            <div class="mb-6">
+                <label class="block mb-2">Harga</label>
+                <input type="number" name="price"
+                    class="w-full border rounded-xl p-3">
+            </div>
+
+            <button class="bg-blue-600 text-white px-6 py-2 rounded-xl">
+                Simpan
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@endsection
