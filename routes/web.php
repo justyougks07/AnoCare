@@ -96,6 +96,13 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::get('/medicines/edit-all-stock',
+    [MedicineController::class,'editAllStock']
+)->name('medicines.editAllStock');
+
+Route::post('/medicines/update-all-stock',
+    [MedicineController::class,'updateAllStock']
+)->name('medicines.updateAllStock');
 /*
 |--------------------------------------------------------------------------
 | STEP 6: Sistem Autentikasi & Login
