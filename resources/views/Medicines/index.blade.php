@@ -1,5 +1,19 @@
 <h1>Daftar Stok Obat Klinik</h1>
 
+<div style="margin-bottom: 20px;">
+    <a href="{{ route('medicines.create') }}" style="display: inline-block; background: blue; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">
+        + Tambah Obat Baru
+    </a>
+
+    <a href="{{ route('prescriptions.create') }}" style="display: inline-block; background: green; color: white; padding: 10px; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+        + Berikan Resep (Pilih Obat)
+    </a>
+
+    <a href="{{ route('medicines.editAllStock') }}" style="display: inline-block; background: orange; color: white; padding: 10px; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+        ⚙️ Update Stok Massal
+    </a>
+</div>
+
 <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
     <thead>
         <tr style="background-color: #f2f2f2;">
@@ -8,7 +22,7 @@
             <th>Harga</th>
             <th>Stok</th>
             <th>Status</th>
-        </tr>
+            <th>Aksi</th> </tr>
     </thead>
     <tbody>
         @foreach($medicines as $medicine)
@@ -26,20 +40,12 @@
                     <span style="color: green; font-weight: bold;">✅ Aman</span>
                 @endif
             </td>
+            <td>
+                <a href="{{ route('medicines.edit', $medicine->id) }}" style="color: blue; font-weight: bold; text-decoration: none;">
+                    Edit/Stok
+                </a>
+            </td>
         </tr>
         @endforeach
-        <a href="{{ route('medicines.create') }}" style="display: inline-block; background: blue; color: white; padding: 10px; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
-         + Tambah Obat Baru</a>
-
-        <th>Aksi</th>
-...
-        <td>
-         <a href="{{ route('medicines.edit', $medicine->id) }}" style="color: blue;">Edit/Stok</a>
-        </td>
-        <a href="{{ route('prescriptions.create') }}" style="background: green; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">
-    + Berikan Resep (Pilih Obat)</a>
-    <a href="{{ route('medicines.editAllStock') }}" style="background: orange; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">
-    ⚙️ Update Stok Massal
-     </a>
     </tbody>
 </table>

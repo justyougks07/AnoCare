@@ -7,8 +7,15 @@ use Illuminate\Http\Request;
 
 class MedicineController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    |  MANAJEMEN DATA OBAT & STOK APOTEK
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Tampilan Utama: Menampilkan semua daftar obat dan status stoknya.
+     * TAMPILAN UTAMA (INDEX)
+     * Mengambil seluruh data dari tabel medicines untuk ditampilkan ke tabel.
      */
     public function index()
     {
@@ -17,7 +24,8 @@ class MedicineController extends Controller
     }
 
     /**
-     * Menampilkan form untuk menambah obat baru ke database.
+     * FORM TAMBAH OBAT (CREATE)
+     * Mengarahkan user ke halaman input data obat baru.
      */
     public function create()
     {
@@ -25,23 +33,26 @@ class MedicineController extends Controller
     }
 
     /**
-     * Menyimpan data obat baru yang diinput dari form create.
+     * PROSES SIMPAN (STORE)
+     * Memvalidasi inputan dan menyimpan data obat baru ke database.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
+            'name'  => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:0',
         ]);
 
         Medicine::create($request->all());
 
-        return redirect()->route('medicines.index')->with('success', 'Obat berhasil ditambahkan!');
+        return redirect()->route('medicines.index')
+                         ->with('success', 'Obat baru berhasil ditambahkan ke sistem!');
     }
 
     /**
-     * Menampilkan form resep (pilih obat dari dropdown untuk dikurangi stoknya).
+     * HALAMAN RESEP (PRESCRIPTION)
+     * Mengambil daftar obat agar dokter/apoteker bisa memilih obat untuk resep.
      */
     public function prescription()
     {
@@ -50,28 +61,34 @@ class MedicineController extends Controller
     }
 
     /**
-     * Proses pengurangan stok berdasarkan input dari form resep.
+     * PROSES POTONG STOK (REDUCE STOCK)
+     * Mengurangi jumlah stok obat secara otomatis berdasarkan jumlah di resep.
      */
     public function reduceStock(Request $request)
     {
         $request->validate([
             'medicine_id' => 'required|exists:medicines,id',
-            'quantity' => 'required|numeric|min:1',
+            'quantity'    => 'required|numeric|min:1',
         ]);
 
         $medicine = Medicine::findOrFail($request->medicine_id);
         
+        // Proteksi jika stok yang diminta melebihi stok yang ada
         if ($medicine->stock < $request->quantity) {
-            return redirect()->back()->with('error', 'Stok obat ' . $medicine->name . ' tidak mencukupi!');
+            return redirect()->back()
+                             ->with('error', "Stok {$medicine->name} tidak cukup (Tersisa: {$medicine->stock})");
         }
 
+        // Mengurangi stok menggunakan method decrement
         $medicine->decrement('stock', $request->quantity);
 
-        return redirect()->route('medicines.index')->with('success', 'Resep berhasil dicatat, stok berkurang!');
+        return redirect()->route('medicines.index')
+                         ->with('success', 'Stok berhasil dipotong sesuai resep!');
     }
 
     /**
-     * Menampilkan form edit untuk satu obat tertentu.
+     * EDIT SATUAN (EDIT)
+     * Mengambil satu data obat berdasarkan ID untuk diedit.
      */
     public function edit(string $id)
     {
@@ -80,12 +97,13 @@ class MedicineController extends Controller
     }
 
     /**
-     * Mengupdate data obat (Nama, Harga, atau Stok) secara manual.
+     * UPDATE SATUAN (UPDATE)
+     * Memperbarui data satu obat di database.
      */
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required',
+            'name'  => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
         ]);
@@ -93,38 +111,48 @@ class MedicineController extends Controller
         $medicine = Medicine::findOrFail($id);
         $medicine->update($request->all());
 
-        return redirect()->route('medicines.index')->with('success', 'Data obat berhasil diperbarui!');
+        return redirect()->route('medicines.index')
+                         ->with('success', 'Data obat berhasil diperbarui!');
     }
 
     /**
-     * Menampilkan halaman update stok massal untuk semua obat.
+     * EDIT STOK MASSAL (EDIT ALL STOCK)
+     * Menampilkan semua obat dalam form input untuk update stok sekaligus.
      */
     public function editAllStock()
     {
         $medicines = Medicine::all();
-        // Pastikan file ini ada di resources/views/medicines/edit_all_stock.blade.php
         return view('medicines.edit_all_stock', compact('medicines'));
     }
 
     /**
-     * Memproses update stok massal dari form edit_all_stock.
+     * UPDATE STOK MASSAL (UPDATE ALL STOCK)
+     * Memproses banyak data stok sekaligus menggunakan perulangan (foreach).
      */
     public function updateAllStock(Request $request)
     {
-        // Melakukan perulangan untuk setiap input stok yang dikirim
+        // $request->stocks berisi array [id_obat => jumlah_stok]
         foreach ($request->stocks as $id => $newStock) {
             Medicine::where('id', $id)->update(['stock' => $newStock]);
         }
 
-        return redirect()->route('medicines.index')->with('success', 'Semua stok berhasil diperbarui!');
+        return redirect()->route('medicines.index')
+                         ->with('success', 'Seluruh stok obat berhasil disinkronisasi!');
     }
 
+    /**
+     * HAPUS DATA (DESTROY)
+     * Menghapus data obat dari sistem secara permanen.
+     */
     public function destroy(string $id)
     {
         $medicine = Medicine::findOrFail($id);
         $medicine->delete();
-        return redirect()->route('medicines.index')->with('success', 'Obat berhasil dihapus!');
+        
+        return redirect()->route('medicines.index')
+                         ->with('success', 'Data obat telah dihapus!');
     }
 
-    public function show(string $id) { /* Kosong */ }
+    // Method Show tidak digunakan dalam manajemen stok sederhana
+    public function show(string $id) { /* N/A */ }
 }
