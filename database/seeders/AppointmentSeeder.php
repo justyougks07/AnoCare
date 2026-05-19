@@ -8,6 +8,7 @@ use App\Models\Dokter;
 use App\Models\Jadwal;
 use App\Models\Appointment;
 use App\Models\Antrian;
+use App\Models\Visit;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
@@ -79,6 +80,13 @@ class AppointmentSeeder extends Seeder
                 'waktu_panggil' => '09:15:00',
                 'status' => 'selesai'
             ]);
+
+            Visit::create([
+                'patient_id' => $pasienWanda->id,
+                'visit_date' => Carbon::today()->toDateString(),
+                'diagnosis' => 'Vertigo',
+                'notes' => 'Diberikan obat Betahistine mesylate. Istirahat 2 hari.',
+            ]);
         }
 
         // ==========================================
@@ -105,6 +113,13 @@ class AppointmentSeeder extends Seeder
                 'waktu_masuk' => '09:15:00',
                 'waktu_panggil' => '09:46:00',
                 'status' => 'sedang_dilayani'
+            ]);
+
+            Visit::create([
+                'patient_id' => $pasienSiti->id,
+                'visit_date' => Carbon::today()->toDateString(),
+                'diagnosis' => 'Asma',
+                'notes' => 'Pasien mengalami sesak napas ringan.',
             ]);
         }
 

@@ -16,7 +16,7 @@
         <div class="p-6 space-y-4 text-sm text-gray-700">
             <div class="grid grid-cols-2 border-b pb-2">
                 <span class="font-semibold text-gray-500">Nama Lengkap Pasien:</span>
-                <span class="font-bold text-gray-900 text-right">{{ $appointment->patient->nama ?? 'Data Pasien Simulasi' }}</span>
+                <span class="font-bold text-gray-900 text-right">{{ $appointment->patient->name ?? 'Data pasien tidak ditemukan' }}</span>
             </div>
 
             <div class="grid grid-cols-2 border-b pb-2">

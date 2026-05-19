@@ -203,6 +203,32 @@
 
                 </div>
 
+                @if(auth()->user()->role === 'dokter')
+                    <div class="mt-6">
+                        <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                            <h3 class="text-lg font-semibold text-slate-800 mb-2">
+                                Analisis Gejala AI
+                            </h3>
+
+                            <p class="text-sm text-slate-500 mb-4">
+                                Masukkan keluhan pasien untuk mendapatkan ringkasan kemungkinan kondisi dan saran tindakan awal.
+                            </p>
+
+                            <form method="POST" action="{{ route('ai.symptom', $patient->id) }}" class="space-y-4">
+                                @csrf
+                                <textarea name="keluhan" rows="4" required
+                                    class="w-full rounded-xl border border-blue-100 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Contoh: demam 2 hari, batuk, nyeri tenggorokan..."></textarea>
+
+                                <button type="submit"
+                                    class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition">
+                                    Analisis Gejala
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
         </div>

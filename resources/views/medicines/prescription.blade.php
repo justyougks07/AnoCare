@@ -14,7 +14,7 @@
             Berikan Resep Obat
         </h1>
 
-        <form action="{{ route('medicines.reduceStock') }}" method="POST">
+        <form action="{{ route('prescriptions.store') }}" method="POST">
             @csrf
 
             {{-- Pilih Obat --}}

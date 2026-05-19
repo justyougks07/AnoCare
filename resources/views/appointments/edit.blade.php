@@ -14,7 +14,7 @@
 
             <div>
                 <label class="block text-sm font-semibold text-gray-500">Nama Pasien</label>
-                <input type="text" class="w-full border rounded-lg p-2 text-sm bg-gray-100 text-gray-600 focus:outline-none" value="{{ $appointment->patient->nama ?? 'Pasien ID: '.$appointment->patient_id }}" readonly>
+                <input type="text" class="w-full border rounded-lg p-2 text-sm bg-gray-100 text-gray-600 focus:outline-none" value="{{ $appointment->patient->name ?? 'Pasien ID: '.$appointment->patient_id }}" readonly>
             </div>
 
             <div>

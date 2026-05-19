@@ -33,7 +33,9 @@ class AppointmentController extends Controller
     public function create()
     {
         $dokters = Dokter::where('is_active', true)->get();
-        $patients = class_exists('App\Models\Patient') ? \App\Models\Patient::all() : [];
+        $patients = auth()->user()->role === 'pasien'
+            ? \App\Models\Patient::where('name', auth()->user()->name)->get()
+            : \App\Models\Patient::orderBy('name')->get();
 
         return view('appointments.create', compact('dokters', 'patients'));
     }
@@ -42,11 +44,17 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'patient_id' => 'required',
+            'patient_id' => 'required|exists:patients,id',
             'dokter_id' => 'required|exists:dokters,id',
             'jadwal_id' => 'required|exists:jadwals,id',
             'keluhan' => 'nullable|string',
         ]);
+
+        if (auth()->user()->role === 'pasien') {
+            $patient = \App\Models\Patient::findOrFail($request->patient_id);
+
+            abort_unless($patient->name === auth()->user()->name, 403, 'Akses ditolak.');
+        }
 
         DB::beginTransaction();
         try {
@@ -79,7 +87,9 @@ class AppointmentController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('appointments.index')->with('success', 'Booking berhasil! No Antrian: #' . $jadwal->pasien_terdaftar);
+            $redirectRoute = auth()->user()->role === 'pasien' ? 'pasien.dashboard' : 'appointments.index';
+
+            return redirect()->route($redirectRoute)->with('success', 'Booking berhasil! No Antrian: #' . $jadwal->pasien_terdaftar);
 
         } catch (\Exception $e) {
             DB::rollback();

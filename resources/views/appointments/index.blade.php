@@ -50,7 +50,7 @@
                     <tr class="{{ $antrian->status == 'sedang_dilayani' ? 'bg-purple-50/50' : '' }} hover:bg-gray-50/80">
                         <td class="px-6 py-4 font-bold text-lg text-indigo-600">#{{ $antrian->nomor_antrian }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900">
-                            {{ $antrian->appointment->patient->nama ?? 'Pasien Pasien (ID: '.$antrian->patient_id.')' }}
+                            {{ $antrian->appointment->patient->name ?? 'Pasien ID: '.$antrian->patient_id }}
                         </td>
                         <td class="px-6 py-4 text-gray-500">{{ \Carbon\Carbon::parse($antrian->waktu_masuk)->format('H:i') }} WIB</td>
                         <td class="px-6 py-4">

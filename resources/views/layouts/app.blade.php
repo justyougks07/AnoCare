@@ -27,6 +27,15 @@
 
     {{-- ✅ CONTENT --}}
     <main class="min-h-screen">
+        @isset($header)
+            <header class="bg-white border-b border-slate-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    {{ $header }}
+                </div>
+            </header>
+        @endisset
+
+        {{ $slot ?? '' }}
         @yield('content')
     </main>
 

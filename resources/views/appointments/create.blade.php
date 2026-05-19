@@ -16,9 +16,14 @@
                 <select name="patient_id" class="w-full border rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none" required>
                     <option value="">-- Pilih Pasien --</option>
                     @foreach($patients as $p)
-                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+                        <option value="{{ $p->id }}">{{ $p->name }}</option>
                     @endforeach
-                    <option value="1">Pasien Simulasi Kelompok #1</option> </select>
+                </select>
+                @if($patients->isEmpty())
+                    <p class="text-xs text-red-600 mt-2">
+                        Data pasien untuk akun ini belum ditemukan. Hubungi admin untuk membuat data pasien dengan nama yang sama.
+                    </p>
+                @endif
             </div>
 
             <div>
@@ -44,7 +49,7 @@
             </div>
 
             <div class="flex justify-end gap-3 pt-2">
-                <a href="{{ route('appointments.index') }}" class="px-4 py-2 border rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50">Batal</a>
+                <a href="{{ auth()->user()->role === 'pasien' ? route('pasien.dashboard') : route('appointments.index') }}" class="px-4 py-2 border rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50">Batal</a>
                 <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium shadow-sm">Simpan Booking</button>
             </div>
         </form>

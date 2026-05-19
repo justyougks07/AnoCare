@@ -23,7 +23,7 @@
             <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 space-y-2 mb-6 text-sm text-gray-700">
                 <div class="flex justify-between">
                     <span class="text-gray-400">Nama Pasien:</span>
-                    <span class="font-semibold text-gray-900">{{ $appointment->patient->nama ?? 'Pasien ID: '.$appointment->patient_id }}</span>
+                    <span class="font-semibold text-gray-900">{{ $appointment->patient->name ?? 'Pasien ID: '.$appointment->patient_id }}</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-gray-400">Dokter Tujuan:</span>

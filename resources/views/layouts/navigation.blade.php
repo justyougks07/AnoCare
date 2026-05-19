@@ -28,6 +28,8 @@
 
                 </a>
 
+                @php($role = Auth::user()->role)
+
                 {{-- DESKTOP MENU --}}
                 <div class="hidden md:flex items-center gap-2">
 
@@ -39,21 +41,41 @@
                         Dashboard
                     </a>
 
-                    <a href="{{ route('patients.index') }}"
-                       class="px-4 py-2 rounded-xl text-sm font-medium transition
-                       {{ request()->routeIs('patients.*')
-                            ? 'bg-blue-50 text-blue-700'
-                            : 'text-slate-600 hover:bg-slate-100' }}">
-                        Pasien
-                    </a>
+                    @if(in_array($role, ['admin', 'dokter'], true))
+                        <a href="{{ route('patients.index') }}"
+                           class="px-4 py-2 rounded-xl text-sm font-medium transition
+                           {{ request()->routeIs('patients.*')
+                                ? 'bg-blue-50 text-blue-700'
+                                : 'text-slate-600 hover:bg-slate-100' }}">
+                            Pasien
+                        </a>
 
-                    <a href="{{ route('medicines.index') }}"
-                       class="px-4 py-2 rounded-xl text-sm font-medium transition
-                       {{ request()->routeIs('medicines.*')
-                            ? 'bg-blue-50 text-blue-700'
-                            : 'text-slate-600 hover:bg-slate-100' }}">
-                        Obat
-                    </a>
+                        <a href="{{ route('appointments.index') }}"
+                           class="px-4 py-2 rounded-xl text-sm font-medium transition
+                           {{ request()->routeIs('appointments.*')
+                                ? 'bg-blue-50 text-blue-700'
+                                : 'text-slate-600 hover:bg-slate-100' }}">
+                            Antrian
+                        </a>
+
+                        <a href="{{ route('medicines.index') }}"
+                           class="px-4 py-2 rounded-xl text-sm font-medium transition
+                           {{ request()->routeIs('medicines.*') || request()->routeIs('prescriptions.*')
+                                ? 'bg-blue-50 text-blue-700'
+                                : 'text-slate-600 hover:bg-slate-100' }}">
+                            Obat
+                        </a>
+                    @endif
+
+                    @if($role === 'pasien')
+                        <a href="{{ route('appointments.create') }}"
+                           class="px-4 py-2 rounded-xl text-sm font-medium transition
+                           {{ request()->routeIs('appointments.create')
+                                ? 'bg-blue-50 text-blue-700'
+                                : 'text-slate-600 hover:bg-slate-100' }}">
+                            Booking
+                        </a>
+                    @endif
 
                 </div>
 
@@ -62,12 +84,19 @@
             {{-- RIGHT AREA --}}
             <div class="hidden md:flex items-center gap-4">
 
-                {{-- BUTTON TAMBAH PASIEN (SATU SAJA) --}}
-                <a href="{{ route('patients.create') }}"
-                   class="bg-blue-600 text-white px-5 py-2 rounded-xl
-                          font-medium shadow hover:bg-blue-700 transition">
-                    + Pasien Baru
-                </a>
+                @if(in_array($role, ['admin', 'dokter'], true))
+                    <a href="{{ route('patients.create') }}"
+                       class="bg-blue-600 text-white px-5 py-2 rounded-xl
+                              font-medium shadow hover:bg-blue-700 transition">
+                        + Pasien Baru
+                    </a>
+                @else
+                    <a href="{{ route('appointments.create') }}"
+                       class="bg-blue-600 text-white px-5 py-2 rounded-xl
+                              font-medium shadow hover:bg-blue-700 transition">
+                        Booking
+                    </a>
+                @endif
 
                 {{-- USER INFO --}}
                 <div class="flex items-center gap-3 bg-slate-50 px-3 py-2
@@ -141,18 +170,29 @@
                 Dashboard
             </a>
 
-            <a href="{{ route('patients.index') }}" class="block p-3 rounded-xl hover:bg-slate-100">
-                Pasien
-            </a>
+            @if(in_array($role, ['admin', 'dokter'], true))
+                <a href="{{ route('patients.index') }}" class="block p-3 rounded-xl hover:bg-slate-100">
+                    Pasien
+                </a>
 
-            <a href="{{ route('medicines.index') }}" class="block p-3 rounded-xl hover:bg-slate-100">
-                Obat
-            </a>
+                <a href="{{ route('appointments.index') }}" class="block p-3 rounded-xl hover:bg-slate-100">
+                    Antrian
+                </a>
 
-            <a href="{{ route('patients.create') }}"
-               class="block p-3 rounded-xl bg-blue-600 text-white">
-                + Pasien Baru
-            </a>
+                <a href="{{ route('medicines.index') }}" class="block p-3 rounded-xl hover:bg-slate-100">
+                    Obat
+                </a>
+
+                <a href="{{ route('patients.create') }}"
+                   class="block p-3 rounded-xl bg-blue-600 text-white">
+                    + Pasien Baru
+                </a>
+            @else
+                <a href="{{ route('appointments.create') }}"
+                   class="block p-3 rounded-xl bg-blue-600 text-white">
+                    Booking Janji Temu
+                </a>
+            @endif
 
         </div>
 
