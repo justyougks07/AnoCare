@@ -65,15 +65,25 @@
         </div>
 
         <div class="mt-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-xl font-semibold text-slate-800 mb-4">Riwayat Kunjungan Terbaru</h2>
-            <div class="divide-y divide-slate-100">
+            <div>
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-slate-800">Riwayat Kunjungan Terbaru</h2>
+                        <p class="text-sm text-slate-500 mt-1">Hasil diagnosa dan kunjungan yang dibuat oleh dokter.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="divide-y divide-slate-100 mt-5">
                 @forelse($recentVisits as $visit)
-                    <div class="py-3 flex items-center justify-between gap-4">
+                    <div class="py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <p class="font-medium text-slate-800">{{ $visit->patient->name ?? 'Pasien terhapus' }}</p>
                             <p class="text-sm text-slate-500">{{ $visit->diagnosis }}</p>
+                            @if($visit->notes)
+                                <p class="text-sm text-slate-500 mt-1">Catatan: {{ \Illuminate\Support\Str::limit($visit->notes, 80) }}</p>
+                            @endif
                         </div>
-                        <span class="text-sm text-slate-500">{{ $visit->visit_date }}</span>
+                        <span class="text-sm text-slate-500">{{ \Carbon\Carbon::parse($visit->visit_date)->format('d M Y') }}</span>
                     </div>
                 @empty
                     <p class="text-sm text-slate-500">Belum ada riwayat kunjungan.</p>

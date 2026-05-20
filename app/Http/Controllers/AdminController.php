@@ -18,7 +18,11 @@ class AdminController extends Controller
             'activeDoctors' => Dokter::where('is_active', true)->count(),
             'todayAppointments' => Appointment::whereDate('tanggal_kunjungan', Carbon::today())->count(),
             'lowStockMedicines' => Medicine::whereColumn('stock', '<=', 'min_stock')->count(),
-            'recentVisits' => Visit::with('patient')->latest('visit_date')->limit(5)->get(),
+            'recentVisits' => Visit::with('patient')
+                ->orderByDesc('visit_date')
+                ->orderByDesc('created_at')
+                ->limit(5)
+                ->get(),
         ]);
     }
 }

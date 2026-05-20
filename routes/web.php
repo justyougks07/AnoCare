@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AiConsultationController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -96,6 +97,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
         Route::get('/dashboard', [DokterController::class, 'index'])->name('dashboard');
+        Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
+        Route::post('/visits', [VisitController::class, 'store'])->name('visits.store');
     });
 
     Route::middleware(['role:pasien'])->prefix('pasien')->name('pasien.')->group(function () {

@@ -202,12 +202,13 @@ class AppointmentController extends Controller
     }
 
     // 10. AJAX API
-    public function getDoctorSchedules($dokterId)
+    public function getDoctorSchedules(Dokter $dokter)
     {
-        $jadwals = Jadwal::where('dokter_id', $dokterId)
+        $jadwals = Jadwal::where('dokter_id', $dokter->id)
             ->where('tanggal', '>=', Carbon::today()->toDateString())
             ->where('status', 'aktif')
-            ->get();
+            ->whereColumn('pasien_terdaftar', '<', 'kuota')
+            ->get(['id', 'tanggal', 'jam_mulai', 'jam_selesai', 'kuota', 'pasien_terdaftar']);
 
         return response()->json($jadwals);
     }

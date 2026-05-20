@@ -42,10 +42,10 @@
                 <p class="text-sm text-slate-500 mt-3">Lihat profil, keluhan, dan riwayat pasien.</p>
             </a>
 
-            <a href="{{ route('prescriptions.create') }}" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:border-blue-300 transition">
-                <p class="text-sm text-slate-500">Farmasi</p>
-                <h2 class="text-xl font-semibold text-slate-800 mt-1">Resep Digital</h2>
-                <p class="text-sm text-slate-500 mt-3">Tulis resep dan kurangi stok obat otomatis.</p>
+            <a href="{{ route('dokter.visits.create') }}" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:border-blue-300 transition">
+                <p class="text-sm text-slate-500">Diagnosis</p>
+                <h2 class="text-xl font-semibold text-slate-800 mt-1">Tambah Hasil Kunjungan</h2>
+                <p class="text-sm text-slate-500 mt-3">Dokter dapat mencatat diagnosis dan catatan setelah periksa pasien.</p>
             </a>
         </div>
 
@@ -55,14 +55,10 @@
                 @forelse($todayQueues as $queue)
                     <div class="py-3 flex items-center justify-between gap-4">
                         <div>
-                            <p class="font-medium text-slate-800">
-                                #{{ $queue->nomor_antrian }} - {{ $queue->appointment->patient->name ?? 'Pasien tidak ditemukan' }}
-                            </p>
+                            <p class="font-medium text-slate-800">#{{ $queue->nomor_antrian }} - {{ $queue->appointment->patient->name ?? 'Pasien tidak ditemukan' }}</p>
                             <p class="text-sm text-slate-500">{{ ucfirst(str_replace('_', ' ', $queue->status)) }}</p>
                         </div>
-                        <a href="{{ route('appointments.show', $queue->appointment_id) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
-                            Detail
-                        </a>
+                        <a href="{{ route('appointments.show', $queue->appointment_id) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">Detail</a>
                     </div>
                 @empty
                     <p class="text-sm text-slate-500">Belum ada antrian untuk hari ini.</p>
